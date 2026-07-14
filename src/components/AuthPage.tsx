@@ -19,6 +19,7 @@ const FloatingFood = ({ src, delay, className, size = "w-24 h-24" }: { src: stri
       y: { duration: 8, repeat: Infinity, ease: "easeInOut", delay: delay + 1 },
       rotate: { duration: 12, repeat: Infinity, ease: "easeInOut", delay: delay + 1 }
     }}
+    style={{ willChange: 'transform, opacity' }}
     className={`absolute rounded-full overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.6)] border border-white/5 ${className} ${size}`}
   >
     <img src={src} alt="Premium Gourmet Food" className="w-full h-full object-cover" />
@@ -34,32 +35,37 @@ const GoldenParticles = () => (
     transition={{ delay: 1, duration: 2 }}
     className="absolute inset-0 overflow-hidden pointer-events-none z-10"
   >
-    {[...Array(30)].map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute rounded-full"
-        style={{
-          width: Math.random() * 3 + 1 + 'px',
-          height: Math.random() * 3 + 1 + 'px',
-          backgroundColor: Math.random() > 0.5 ? '#D4AF37' : '#FFD86B',
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          filter: `blur(${Math.random() * 1 + 0.5}px)`,
-        }}
-        initial={{ opacity: 0, y: 0 }}
-        animate={{
-          y: [0, Math.random() * -200 - 100],
-          x: [0, (Math.random() - 0.5) * 50],
-          opacity: [0, Math.random() * 0.6 + 0.2, 0],
-        }}
-        transition={{
-          duration: Math.random() * 10 + 10,
-          repeat: Infinity,
-          ease: "linear",
-          delay: 1 + Math.random() * 5
-        }}
-      />
-    ))}
+    {[...Array(15)].map((_, i) => {
+      const size = Math.random() * 3 + 1;
+      const color = Math.random() > 0.5 ? '#D4AF37' : '#FFD86B';
+      return (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: size + 'px',
+            height: size + 'px',
+            backgroundColor: color,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            boxShadow: `0 0 ${size * 2}px ${color}`,
+            willChange: 'transform, opacity'
+          }}
+          initial={{ opacity: 0, y: 0, x: 0 }}
+          animate={{
+            y: [0, Math.random() * -200 - 100],
+            x: [0, (Math.random() - 0.5) * 50],
+            opacity: [0, Math.random() * 0.6 + 0.2, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 1 + Math.random() * 5
+          }}
+        />
+      );
+    })}
   </motion.div>
 );
 
