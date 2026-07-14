@@ -91,7 +91,7 @@ export default function LocationPicker() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
-          onClick={closeLocationPicker} 
+          onClick={deliveryLocation ? closeLocationPicker : undefined} 
         />
         <motion.div
           initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -105,9 +105,11 @@ export default function LocationPicker() {
                 <MapPin className="w-6 h-6 text-orange-500" />
                 Delivery Location
               </h2>
-              <button onClick={closeLocationPicker} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
-                <X className="w-5 h-5" />
-              </button>
+              {deliveryLocation && (
+                <button onClick={closeLocationPicker} className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-500">
+                  <X className="w-5 h-5" />
+                </button>
+              )}
             </div>
 
             <button

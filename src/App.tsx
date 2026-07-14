@@ -33,6 +33,7 @@ const OrdersPage = lazy(() => import('./components/OrdersPage'));
 // Store
 import { useSystemStore } from './store/systemStore';
 import { useMenuStore } from './store/menuStore';
+import { useLocationStore } from './store/locationStore';
 
 function GoldenParticles() {
   return (
@@ -96,6 +97,13 @@ function PageTransition({ children }: { children: React.ReactNode }) {
 export default function App() {
   const listenSettings = useSystemStore(state => state.listenSettings);
   const listenToMenu = useMenuStore(state => state.listenToMenu);
+  const { deliveryLocation, openLocationPicker } = useLocationStore();
+
+  useEffect(() => {
+    if (!deliveryLocation) {
+      openLocationPicker();
+    }
+  }, [deliveryLocation, openLocationPicker]);
 
   // Synchronize dynamic admin settings and menu on app initialization
   useEffect(() => {
