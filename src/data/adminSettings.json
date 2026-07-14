@@ -1,0 +1,33 @@
+{
+  "websiteStatus": "OFF",
+  "maintenanceMessage": "Mintoo is temporarily closed. We'll reopen soon ❤️",
+  "openTime": "12:30",
+  "closeTime": "22:45",
+  "reopenMessage": "We will reopen normally on May 29, 2026.",
+  "emergencyStop": false,
+  "festivalMode": false,
+  "deliveryPause": false,
+  "orderLimit": 50,
+  "lastUpdated": "2026-06-27T09:28:00.132Z",
+  "whatsappNumber": "+917483187572",
+  "whatsappAlertsEnabled": true,
+  "comboOffers": [
+    {
+      "id": "combo-veg",
+      "name": "Veg Delight Combo",
+      "regularPrice": 379,
+      "offerPrice": 289,
+      "savings": 90,
+      "items": [
+        "Veg Kadai",
+        "4 Chapati",
+        "Coke"
+      ],
+      "badge": "POPULAR",
+      "isActive": true,
+      "isFeatured": true,
+      "expiryDate": "2026-06-30",
+      "image": "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800&q=80"
+    }
+  ]
+}

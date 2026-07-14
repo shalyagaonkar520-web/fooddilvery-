@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moms Magic</title>
+    
+    <!-- PWA / Mobile Meta Tags -->
+    <meta name="theme-color" content="#050505" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Mintoo" />
+    <link rel="apple-touch-icon" href="/pwa-icon-192.png" />
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Order Chicken Biryani, Shawarma, Noodles, Veg Meals, Fast Food and Special Combo Offers from Moms Magic. Fast delivery in BTM Layout, Bangalore and nearby areas." />
+    <meta name="keywords" content="moms magic, food delivery btm layout, food delivery bangalore, chicken biryani btm layout, chicken biryani bangalore, shawarma bangalore, online food ordering, fast food delivery" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://momsmagic.shop" />
+    <meta property="og:title" content="Moms Magic" />
+    <meta property="og:description" content="Order food online from Moms Magic. Fast delivery in BTM Layout, Bangalore and nearby areas." />
+    <meta property="og:image" content="https://momsmagic.shop/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://momsmagic.shop" />
+    <meta property="twitter:title" content="Moms Magic" />
+    <meta property="twitter:description" content="Order food online from Moms Magic. Fast delivery in BTM Layout, Bangalore and nearby areas." />
+    <meta property="twitter:image" content="https://momsmagic.shop/logo.png" />
+
+    <!-- Structured Data (Restaurant Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "name": "Moms Magic",
+      "image": "https://momsmagic.shop/logo.png",
+      "url": "https://momsmagic.shop",
+      "telephone": "+919606001790",
+      "priceRange": "$$",
+      "servesCuisine": ["Indian", "Chinese", "Fast Food", "Biryani"],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "BTM Layout",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      },
+      "areaServed": [
+        {
+          "@type": "AdministrativeArea",
+          "name": "BTM Layout"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Bangalore"
+        }
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

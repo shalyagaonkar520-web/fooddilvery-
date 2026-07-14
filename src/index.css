@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Outfit", "Inter", sans-serif;
+  
+  /* Overriding Tailwind colors to achieve the premium restaurant feel */
+  --color-orange-50: #FAF5EB;
+  --color-orange-100: #F2E8D3;
+  --color-orange-200: #E6D2AD;
+  --color-orange-300: #D8B781;
+  --color-orange-400: #CDA45E;
+  --color-orange-500: #C89B3C; /* Accent Gold */
+  --color-orange-600: #A67C2D; /* Dark Gold */
+  --color-orange-700: #8C6826;
+  --color-orange-900: #594318;
+  
+  --color-gray-50: #FAF8F5;    /* Background */
+  --color-gray-100: #F3F1EC;   /* Slightly darker background for borders/hover */
+  --color-gray-200: #E5E2DC;
+  --color-gray-300: #D4D0C8;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;   /* Secondary Text */
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #292929;
+  --color-gray-900: #111111;   /* Primary Text */
+
+  --color-slate-900: #111111;  /* Dark headers */
+
+  --color-green-500: #2E7D32;  /* Success */
+  --color-green-600: #1B5E20;
+
+  /* Premium Light Theme Palette */
+  --color-brand: #C89B3C; 
+  --color-brand-hover: #A67C2D;
+  --color-brand-glow: rgba(200, 155, 60, 0.1);
+  
+  --color-gold: #C89B3C; 
+  --color-gold-soft: #E6D2AD; 
+  
+  --color-matte-black: #FAF8F5; 
+  --color-dark-surface: #FFFFFF; 
+  
+  --color-text-main: #111111; 
+  --color-text-muted: #6B7280; 
+}
+
+@layer base {
+  body {
+    @apply bg-[#fae6d8] text-gray-900 antialiased selection:bg-orange-500/20 overflow-x-hidden;
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    @apply tracking-tight;
+  }
+}
+
+@layer components {
+  .luxury-card {
+    @apply bg-white border border-gray-100 relative overflow-hidden transition-all duration-300 rounded-3xl;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
+  }
+  
+  .luxury-card:hover {
+    @apply border-gray-200 -translate-y-1;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(0, 0, 0, 0.03);
+  }
+  
+  .btn-luxury-gold {
+    @apply font-black uppercase tracking-[2px] px-8 py-4 rounded-xl transition-all duration-300
+           shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40
+           hover:scale-[1.02] active:scale-95;
+    background: #C89B3C;
+    color: #FFFFFF;
+  }
+
+  .glass-nav {
+    @apply bg-white/90 backdrop-blur-xl border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.05)];
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Animations */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes smoke {
+  0% { background-position: 0% 0%; opacity: 0.1; }
+  50% { opacity: 0.3; }
+  100% { background-position: 100% -100%; opacity: 0.1; }
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}

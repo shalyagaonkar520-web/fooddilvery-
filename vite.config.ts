@@ -1,0 +1,204 @@
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
+import path from 'path';
+import fs from 'fs';
+import {defineConfig, loadEnv} from 'vite';
+
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, '.', '');
+  return {
+    base: './',
+    plugins: [
+      react(), 
+      tailwindcss(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.ico', 'robots.txt', 'logo.png', 'pwa-icon-192.png', 'pwa-icon-512.png'],
+        manifest: {
+          name: "Mom's Magic",
+          short_name: "Mom's Magic",
+          description: "Order fresh food online from Mom's Magic. Fast delivery in BTM Layout, Bangalore and nearby areas.",
+          theme_color: "#050505",
+          background_color: "#050505",
+          display: "standalone",
+          orientation: "portrait",
+          start_url: ".",
+          scope: "/",
+          icons: [
+            {
+              src: "pwa-icon-192.png",
+              sizes: "192x192",
+              type: "image/png"
+            },
+            {
+              src: "pwa-icon-512.png",
+              sizes: "512x512",
+              type: "image/png"
+            },
+            {
+              src: "pwa-icon-512.png",
+              sizes: "512x512",
+              type: "image/png",
+              purpose: "any maskable"
+            }
+          ]
+        },
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,png,jpg,jpeg,svg,ico,json}'],
+          // Import the Firebase Cloud Messaging service worker script
+          // to combine FCM background push alerts with PWA offline caching!
+          importScripts: ['/firebase-messaging-sw.js']
+        },
+        devOptions: {
+          enabled: false,
+          type: 'module'
+        }
+      }),
+      {
+        name: 'api-mock-server',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            const settingsPath = path.resolve(__dirname, 'src/data/adminSettings.json');
+
+            // Handle Admin Login
+            if (req.url && req.url.includes('/api/login') && req.method === 'POST') {
+              let body = '';
+              req.on('data', chunk => { body += chunk.toString(); });
+              req.on('end', () => {
+                try {
+                  const data = JSON.parse(body);
+                  const { email = '', password = '' } = data;
+                  if (email.trim().toLowerCase() === 'shalyagaonkar@gmail.com' && password.trim() === 'Shalya@2004') {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({
+                      success: true,
+                      token: 'mock-jwt-admin-token-123456',
+                      user: {
+                        id: 'admin-1',
+                        name: 'Shalya Gaonkar',
+                        email: 'shalyagaonkar@gmail.com',
+                        role: 'super_admin'
+                      }
+                    }));
+                  } else {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: false, message: 'Invalid email or password' }));
+                  }
+                } catch (e) {
+                  res.writeHead(400, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ success: false, message: 'Invalid request body' }));
+                }
+              });
+              return;
+            }
+
+            // Handle GET Admin Settings
+            if (req.url && req.url.includes('/api/settings') && req.method === 'GET') {
+              try {
+                const settingsData = fs.readFileSync(settingsPath, 'utf8');
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(settingsData);
+              } catch (e) {
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: 'Failed to load settings' }));
+              }
+              return;
+            }
+
+            // Handle POST Admin Settings
+            if (req.url && req.url.includes('/api/settings') && req.method === 'POST') {
+              const authHeader = req.headers['authorization'];
+              if (!authHeader || !authHeader.includes('mock-jwt-admin-token-123456')) {
+                res.writeHead(401, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: 'Unauthorized access' }));
+                return;
+              }
+
+              let body = '';
+              req.on('data', chunk => { body += chunk.toString(); });
+              req.on('end', () => {
+                try {
+                  const newSettings = JSON.parse(body);
+                  newSettings.lastUpdated = new Date().toISOString();
+                  fs.writeFileSync(settingsPath, JSON.stringify(newSettings, null, 2), 'utf8');
+                  res.writeHead(200, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ success: true, settings: newSettings }));
+                } catch (e) {
+                  res.writeHead(400, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ success: false, message: 'Invalid settings format' }));
+                }
+              });
+              return;
+            }
+
+            // Handle POST Send Telegram (LOCAL DEV MOCK)
+            // The dev machine's network blocks api.telegram.org from Node.js.
+            // Return 503 immediately so the browser's built-in direct fallback
+            // in Checkout.tsx takes over — it calls Telegram directly from the
+            // browser, which is NOT blocked. No error logging needed here.
+            if (req.url && req.url.includes('/api/send-telegram') && req.method === 'POST') {
+              let body = '';
+              req.on('data', chunk => { body += chunk.toString(); });
+              req.on('end', () => {
+                // Drain the body so the socket isn't left hanging
+                res.writeHead(503, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({
+                  success: false,
+                  error: 'Local dev: proxy unavailable – browser direct call will handle this'
+                }));
+              });
+              return;
+            }
+
+            // Handle POST Send Push Notification (LOCAL DEV MOCK)
+            if (req.url && req.url.includes('/api/send-push') && req.method === 'POST') {
+              let body = '';
+              req.on('data', chunk => { body += chunk.toString(); });
+              req.on('end', () => {
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({
+                  success: true,
+                  successCount: 3,
+                  failureCount: 0,
+                  message: 'Local dev mock: Broadcasted push alert to 3 active PWA installations.'
+                }));
+              });
+              return;
+            }
+
+            next();
+          });
+        }
+      }
+    ],
+    define: {
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
+      },
+    },
+    server: {
+      host: '0.0.0.0',
+      port: 3000,
+      allowedHosts: 'all',
+      // HMR is disabled in AI Studio via DISABLE_HMR env var.
+      // Do not modify—file watching is disabled to prevent flickering during agent edits.
+      hmr: process.env.DISABLE_HMR !== 'true',
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+            'vendor-motion': ['framer-motion'],
+            'vendor-lucide': ['lucide-react'],
+            'vendor-firebase': ['firebase/app', 'firebase/firestore', 'firebase/auth']
+          }
+        }
+      }
+    }
+  };
+});
